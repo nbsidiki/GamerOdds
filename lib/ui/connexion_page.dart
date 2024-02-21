@@ -22,11 +22,23 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 0.0, top: 450.0),
+                margin: const EdgeInsets.only(top: 200),
+                padding: EdgeInsets.only(left: 155),
+                child: Row(
+                  children: [
+                    Text("Feels the",
+                        style: TextStyle(fontSize: 25, color: Colors.white)),
+                    Text("Game",
+                        style: TextStyle(fontSize: 35, color: Colors.white)),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 0.0, top: 380.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0)),
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0)),
                   color: Colors.white,
                 ),
                 child: Expanded(
@@ -37,6 +49,9 @@ class LoginPage extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const Text('Bienvenue sur \n GamerOdds',
+                              style:
+                                  TextStyle(fontSize: 28, color: Colors.black)),
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
@@ -68,9 +83,18 @@ class LoginPage extends StatelessWidget {
                             obscureText: true,
                           ),
                           const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Se connecter'),
+                          Container(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(
+                                    0xff5E28D1), // Couleur violette pour le bouton
+                              ),
+                              onPressed: () {},
+                              child: const Text('Se connecter',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white)),
+                            ),
                           ),
                         ],
                       ),
