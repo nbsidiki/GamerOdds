@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class SigninPage extends StatelessWidget {
+  const SigninPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,34 +49,31 @@ class LoginPage extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Bienvenue sur \n GamerOdds',
+                          const Text('Inscription',
                               style:
-                                  TextStyle(fontSize: 28, color: Colors.black)),
+                                  TextStyle(fontSize: 24, color: Colors.black)),
                           TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              prefixIcon: Icon(Icons.email),
-                              border: OutlineInputBorder(),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter a valid email address';
-                              }
-                              if (!value.contains('@')) {
-                                return 'Email is invalid, must contain @';
-                              }
-                              if (!value.contains('.')) {
-                                return 'Email is invalid, must contain .';
-                              }
-                              return null;
-                            },
-                          ),
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
+                                prefixIcon: Icon(Icons.email),
+                                border: OutlineInputBorder(),
+                              )),
                           const SizedBox(height: 20),
                           TextFormField(
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                               labelText: 'Mot de passe',
+                              prefixIcon: Icon(Icons.lock),
+                              border: OutlineInputBorder(),
+                            ),
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            keyboardType: TextInputType.visiblePassword,
+                            decoration: const InputDecoration(
+                              labelText: 'Confirmation de Mot de passe',
                               prefixIcon: Icon(Icons.lock),
                               border: OutlineInputBorder(),
                             ),
@@ -91,7 +88,7 @@ class LoginPage extends StatelessWidget {
                                     0xff5E28D1), // Couleur violette pour le bouton
                               ),
                               onPressed: () {},
-                              child: const Text('Se connecter',
+                              child: const Text('inscription',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white)),
                             ),

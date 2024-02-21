@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gamer_oods_flutter_application/ui/connexion_page.dart';
+import 'package:gamer_oods_flutter_application/ui/login_page.dart';
 
 void main() {
   runApp(const MyApp());
