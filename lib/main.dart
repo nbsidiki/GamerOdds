@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gamer_oods_flutter_application/ui/connexion_page.dart';
+import 'package:gamer_oods_flutter_application/ui/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +14,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GamerOods',
       theme: ThemeData(
+        fontFamily: 'BricolageGrotesque',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'GamerOods'),
+      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
