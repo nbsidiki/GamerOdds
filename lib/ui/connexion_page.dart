@@ -8,8 +8,7 @@ class LoginPage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Stack(
             children: [
               Expanded(
                 flex: 2,
@@ -22,38 +21,87 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.email),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Mot de passe',
-                          prefixIcon: Icon(Icons.lock),
-                          border: OutlineInputBorder(),
-                        ),
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Se connecter'),
-                      ),
-                    ],
-                  ),
+              Container(
+                margin: const EdgeInsets.only(top: 200),
+                padding: EdgeInsets.only(left: 155),
+                child: Row(
+                  children: [
+                    Text("Feels the",
+                        style: TextStyle(fontSize: 25, color: Colors.white)),
+                    Text("Game",
+                        style: TextStyle(fontSize: 35, color: Colors.white)),
+                  ],
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 0.0, top: 380.0),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0)),
+                  color: Colors.white,
+                ),
+                child: Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Bienvenue sur \n GamerOdds',
+                              style:
+                                  TextStyle(fontSize: 28, color: Colors.black)),
+                          TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: const InputDecoration(
+                              labelText: 'Email',
+                              prefixIcon: Icon(Icons.email),
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a valid email address';
+                              }
+                              if (!value.contains('@')) {
+                                return 'Email is invalid, must contain @';
+                              }
+                              if (!value.contains('.')) {
+                                return 'Email is invalid, must contain .';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            keyboardType: TextInputType.visiblePassword,
+                            decoration: const InputDecoration(
+                              labelText: 'Mot de passe',
+                              prefixIcon: Icon(Icons.lock),
+                              border: OutlineInputBorder(),
+                            ),
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(
+                                    0xff5E28D1), // Couleur violette pour le bouton
+                              ),
+                              onPressed: () {},
+                              child: const Text('Se connecter',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

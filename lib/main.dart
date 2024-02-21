@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GamerOods',
+      title: 'GamerOdds',
       theme: ThemeData(
         fontFamily: 'BricolageGrotesque',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
