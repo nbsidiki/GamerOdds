@@ -34,7 +34,7 @@ class SigninPage extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 0.0, top: 380.0),
+                margin: const EdgeInsets.only(bottom: 0.0, top: 330.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
