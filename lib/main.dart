@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gamer_oods_flutter_application/ui/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:gamer_oods_flutter_application/ui/home_page.dart';
+import 'package:gamer_oods_flutter_application/ui/signin_page.dart';
 
 Future<void> main() async {
   await Firebase.initializeApp(
@@ -49,15 +51,47 @@ class MyHomePage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-            );
-          },
-          child: const Text('Page de Connexion'),
+      body: Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment:
+                MainAxisAlignment.center, // Centrer verticalement
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+                },
+                child: const Text('Page de Connexion'),
+              ),
+              const SizedBox(
+                  height:
+                      16), // Ajoutez un espacement de 16 pixels entre les boutons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                child: const Text('Home Page'),
+              ),
+              const SizedBox(
+                  height:
+                      16), // Ajoutez un espacement de 16 pixels entre les boutons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SigninPage()),
+                  );
+                },
+                child: const Text('Signin Page'),
+              ),
+            ],
+          ),
         ),
       ),
     );
