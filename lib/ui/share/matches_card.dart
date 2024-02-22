@@ -19,9 +19,16 @@ class _MatchesCardState extends State<MatchesCard> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(children: [
-          const Text(
-            'Le 14/12/24 à 14h30',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/cs2logo.png', height: 36, width: 36,),
+              SizedBox(width: 10,),
+              const Text(
+                'Le 14/12/24 à 14h30',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color:black),
+              ),
+            ],
           ),
           const SizedBox(
             height: 20,
