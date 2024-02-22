@@ -1,11 +1,38 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gamer_oods_flutter_application/ui/home_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPage();
+}
+
+class _LoginPage extends State<LoginPage> {
+  FirebaseDatabase database = FirebaseDatabase.instance;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  signIn() {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) => {
+              print(value),
+              if (FirebaseAuth.instance.currentUser != null)
+                {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => HomePage()))
+                }
+            });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SafeArea(
           child: Stack(
@@ -52,7 +79,8 @@ class LoginPage extends StatelessWidget {
                           const Text('Bienvenue sur \n GamerOdds',
                               style:
                                   TextStyle(fontSize: 28, color: Colors.black)),
-                          TextFormField(
+                          TextField(
+                              controller: emailController,
                               keyboardType: TextInputType.text,
                               decoration: const InputDecoration(
                                 labelText: 'Username',
@@ -60,7 +88,8 @@ class LoginPage extends StatelessWidget {
                                 border: OutlineInputBorder(),
                               )),
                           const SizedBox(height: 20),
-                          TextFormField(
+                          TextField(
+                            controller: passwordController,
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                               labelText: 'Mot de passe',
@@ -77,7 +106,12 @@ class LoginPage extends StatelessWidget {
                                 primary: Color(
                                     0xff5E28D1), // Couleur violette pour le bouton
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                signIn();
+                                if (FirebaseAuth.instance.currentUser != null) {
+                                  print(FirebaseAuth.instance.currentUser?.uid);
+                                }
+                              },
                               child: const Text('Se connecter',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white)),
