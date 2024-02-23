@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "930275731005",
+    "project_id": "gamerodds-2b028",
+    "storage_bucket": "gamerodds-2b028.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930275731005:android:29b55eea24970268602c54",
+        "android_client_info": {
+          "package_name": "com.example.gamer_oods_flutter_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxBqwSIULr_xuFi6qgitgynlgM3bo92ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -37,6 +37,9 @@ dependencies:
   icons_plus: ^5.0.0
   flutter_svg: ^2.0.10+1
   page_transition: ^2.1.0
+  firebase_database: ^10.4.6
+  firebase_core: ^2.25.4
+  firebase_auth: ^4.17.4
 
 dev_dependencies:
   flutter_test:
