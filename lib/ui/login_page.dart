@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gamer_oods_flutter_application/ui/home_page.dart';
+import 'package:gamer_oods_flutter_application/ui/signin_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -48,6 +49,26 @@ class _LoginPage extends State<LoginPage> {
                   ),
                 ),
               ),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 9, right: 5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          Color(0xff5E28D1), // Couleur violette pour le bouton
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SigninPage()),
+                      );
+                    },
+                    child: const Text('Inscription',
+                        style: TextStyle(fontSize: 25, color: Colors.white)),
+                  ),
+                ),
+              ]),
               Container(
                 margin: const EdgeInsets.only(top: 200),
                 padding: EdgeInsets.only(left: 155),
