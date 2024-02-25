@@ -21,7 +21,7 @@ class _LoginPage extends State<LoginPage> {
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
         .then((value) => {
-              print(value),
+              //print(value),
               if (FirebaseAuth.instance.currentUser != null)
                 {
                   Navigator.of(context)
@@ -130,7 +130,7 @@ class _LoginPage extends State<LoginPage> {
                               onPressed: () {
                                 signIn();
                                 if (FirebaseAuth.instance.currentUser != null) {
-                                  print(FirebaseAuth.instance.currentUser?.uid);
+                                  //print(FirebaseAuth.instance.currentUser?.uid);
                                 }
                               },
                               child: const Text('Se connecter',

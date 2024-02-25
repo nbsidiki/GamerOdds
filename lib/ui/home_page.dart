@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gamer_oods_flutter_application/models/api.dart';
+import 'package:gamer_oods_flutter_application/models/bet.dart';
+import 'package:gamer_oods_flutter_application/models/globals.dart';
 import 'package:gamer_oods_flutter_application/theme/colors.dart';
 import 'package:gamer_oods_flutter_application/ui/parier_page.dart';
 import 'package:gamer_oods_flutter_application/ui/share/matches_card.dart';
 import 'package:gamer_oods_flutter_application/ui/share/mes_paris_card.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:gamer_oods_flutter_application/models/match.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +19,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
+  late Future<List<Match>> matchs;
+  late Future<List<Bet>> bets;
+
+  @override
+  void initState() {
+    matchs = API.getMatchs();
+    bets = API.getBetsFromUserId(currentUserId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +35,14 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: primary,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(48.0), // here the desired height
-          child: getAppbar()),
-      body: getBody(),
+          child: Container(
+              decoration: const BoxDecoration(
+                  color: secondary,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10))),
+              child: SafeArea(child: getAppbar()))),
+      body: SafeArea(child: getBody()),
     );
   }
 
@@ -82,34 +101,81 @@ class _HomePageState extends State<HomePage> {
         IndexedStack(
           index: pageIndex,
           children: [
-            SingleChildScrollView(
-                child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 90),
-              child: Wrap(
-                  runSpacing: 16,
-                  children: List.generate(29, (index) {
-                    return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: ParierPage(),
-                            ),
-                          );
-                        },
-                        child: MatchesCard());
-                  })),
-            )),
-            SingleChildScrollView(
-                child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 90),
-              child: Wrap(
-                  runSpacing: 16,
-                  children: List.generate(29, (index) {
-                    return MesParisCard();
-                  })),
-            )),
+            FutureBuilder(
+                future: matchs,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                        child: Padding(
+                      padding: EdgeInsets.fromLTRB(16, 16, 16, 90),
+                      child: Wrap(
+                          runSpacing: 16,
+                          children: List.generate(snapshot.data?.length ?? 0,
+                              (index) {
+                            return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: ParierPage((snapshot.data
+                                          as List<Match>)[index]),
+                                    ),
+                                  ).then((val) => val
+                                      ? {
+                                          setState(() {
+                                            matchs = API.getMatchs();
+                                            bets = API.getBetsFromUserId(
+                                                currentUserId);
+                                          })
+                                        }
+                                      : null);
+                                },
+                                child: MatchesCard(
+                                    (snapshot.data as List<Match>)[index]));
+                          })),
+                    ));
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text("erreur : ${snapshot.error}"),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(color: secondary),
+                    );
+                  }
+                }),
+            FutureBuilder(
+                future: bets,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    snapshot.data?.sort((a, b) {
+                      return a.match.date.isBefore(b.match.date)
+                          ? -1
+                          : ((a.match.date.isAfter(b.match.date)) ? 1 : 0);
+                    });
+                    return SingleChildScrollView(
+                        child: Padding(
+                      padding: EdgeInsets.fromLTRB(16, 16, 16, 90),
+                      child: Wrap(
+                          runSpacing: 16,
+                          children: List.generate(snapshot.data?.length ?? 0,
+                              (index) {
+                            return MesParisCard(
+                                (snapshot.data as List<Bet>)[index]);
+                          })),
+                    ));
+                  } else if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Center(
+                      child: Text("erreur : ${snapshot.error}"),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(color: secondary),
+                    );
+                  }
+                }),
           ],
         ),
         Positioned(
@@ -119,16 +185,13 @@ class _HomePageState extends State<HomePage> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   '358',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color:black),
+                  style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold, color: black),
                 ),
                 SizedBox(
                   width: 6,
                 ),
-                Icon(
-                  MingCute.diamond_2_line,
-                  size: 24,
-                  color:black
-                )
+                Icon(MingCute.diamond_2_line, size: 24, color: black)
               ]),
               width: 210,
               height: 50,

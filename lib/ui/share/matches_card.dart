@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gamer_oods_flutter_application/theme/colors.dart';
+import 'package:gamer_oods_flutter_application/models/match.dart';
+import 'package:intl/intl.dart';
+import 'package:jovial_svg/jovial_svg.dart';
 
 class MatchesCard extends StatefulWidget {
-  const MatchesCard({super.key});
+  final Match match;
+
+  const MatchesCard(this.match, {Key? key}) : super(key: key);
 
   @override
   State<MatchesCard> createState() => _MatchesCardState();
@@ -22,11 +27,18 @@ class _MatchesCardState extends State<MatchesCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/images/cs2logo.png', height: 36, width: 36,),
-              SizedBox(width: 10,),
-              const Text(
-                'Le 14/12/24 à 14h30',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color:black),
+              Image.asset(
+                'assets/images/cs2logo.png',
+                height: 36,
+                width: 36,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                DateFormat('dd/MM/yyyy à HH:mm').format(widget.match.date),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 16, color: black),
               ),
             ],
           ),
@@ -43,26 +55,40 @@ class _MatchesCardState extends State<MatchesCard> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              "2.32",
-                              style: TextStyle(
+                            Text(
+                              widget.match.team1.odds.toString(),
+                              style: const TextStyle(
                                   color: third, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                               width: 20,
-                            ),                            SizedBox(height: 52, width: 52, child: SvgPicture.asset('assets/images/vitality-logo.svg' ),),
+                            ),
+                            SizedBox(
+                              height: 52,
+                              width: 52,
+                              child: widget.match.team1.team.imageUrl
+                                      .contains(".svg")
+                                  ? ScalableImageWidget.fromSISource(
+                                      si: ScalableImageSource.fromSvgHttpUrl(
+                                          Uri.parse(widget
+                                              .match.team1.team.imageUrl)))
+                                  : Image.network(
+                                      widget.match.team1.team.imageUrl),
+                              // SvgPicture.asset(
+                              //     'assets/images/vitality-logo.svg'),
+                            ),
                           ],
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        const Row(
+                        Row(
                           children: [
                             Expanded(
                               child: Text(
-                                "Team Vitality",
+                                widget.match.team1.team.name.toString(),
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                     color: black),
@@ -92,13 +118,26 @@ class _MatchesCardState extends State<MatchesCard> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: 52, width: 52, child: SvgPicture.asset('assets/images/spirit-logo.svg'),),
+                          SizedBox(
+                            height: 52,
+                            width: 52,
+                            child: widget.match.team2.team.imageUrl
+                                    .contains(".svg")
+                                ? ScalableImageWidget.fromSISource(
+                                    si: ScalableImageSource.fromSvgHttpUrl(
+                                        Uri.parse(
+                                            widget.match.team2.team.imageUrl)))
+                                : Image.network(
+                                    widget.match.team2.team.imageUrl),
+                            // SvgPicture.asset(
+                            //     'assets/images/spirit-logo.svg'),
+                          ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            "2.32",
-                            style: TextStyle(
+                          Text(
+                            widget.match.team2.odds.toString(),
+                            style: const TextStyle(
                                 color: third, fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -106,13 +145,13 @@ class _MatchesCardState extends State<MatchesCard> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Expanded(
                             child: Text(
-                              "Team Spirit",
+                              widget.match.team2.team.name.toString(),
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                   color: black),

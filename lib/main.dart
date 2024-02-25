@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gamer_oods_flutter_application/models/globals.dart';
 import 'package:gamer_oods_flutter_application/ui/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -7,13 +8,17 @@ import 'package:gamer_oods_flutter_application/ui/home_page.dart';
 import 'package:gamer_oods_flutter_application/ui/signin_page.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+  FirebaseAuth.instance.authStateChanges().listen((User? user) async {
     if (user == null) {
       print('User is currently signed out!');
     } else {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? user = auth.currentUser;
+      currentUserId = user?.uid as String;
       print('User is signed in!');
     }
   });

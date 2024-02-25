@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gamer_oods_flutter_application/models/bet.dart';
 import 'package:gamer_oods_flutter_application/theme/colors.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:intl/intl.dart';
+import 'package:jovial_svg/jovial_svg.dart';
 
 class MesParisCard extends StatefulWidget {
-  const MesParisCard({super.key});
+  final Bet bet;
+
+  const MesParisCard(this.bet, {Key? key}) : super(key: key);
 
   @override
   State<MesParisCard> createState() => _MesParisCardState();
@@ -23,11 +28,18 @@ class _MesParisCardState extends State<MesParisCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/images/cs2logo.png', height: 36, width: 36,),
-              SizedBox(width: 10,),
-              const Text(
-                'Le 14/12/24 à 14h30',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color:black),
+              Image.asset(
+                'assets/images/cs2logo.png',
+                height: 36,
+                width: 36,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                DateFormat('dd/MM/yyyy à HH:mm').format(widget.bet.match.date),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 16, color: black),
               ),
             ],
           ),
@@ -44,9 +56,11 @@ class _MesParisCardState extends State<MesParisCard> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              "2.32",
-                              style: TextStyle(
+                            Text(
+                              widget.bet.teamId == "1"
+                                  ? widget.bet.odds.toString()
+                                  : widget.bet.ennemyOdds.toString(),
+                              style: const TextStyle(
                                   color: third, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
@@ -55,21 +69,27 @@ class _MesParisCardState extends State<MesParisCard> {
                             SizedBox(
                               height: 52,
                               width: 52,
-                              child: SvgPicture.asset(
-                                  'assets/images/vitality-logo.svg'),
+                              child: widget.bet.match.team1.team.imageUrl
+                                      .contains(".svg")
+                                  ? ScalableImageWidget.fromSISource(
+                                      si: ScalableImageSource.fromSvgHttpUrl(
+                                          Uri.parse(widget
+                                              .bet.match.team1.team.imageUrl)))
+                                  : Image.network(
+                                      widget.bet.match.team1.team.imageUrl),
                             ),
                           ],
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        const Row(
+                        Row(
                           children: [
                             Expanded(
                               child: Text(
-                                "Team Vitality",
+                                widget.bet.match.team1.team.name,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                     color: black),
@@ -77,8 +97,23 @@ class _MesParisCardState extends State<MesParisCard> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20,),
-                        Container(padding: EdgeInsets.fromLTRB(9, 3, 9, 3), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color:Color(0xffB52323)), child: Text("Défaite", style: TextStyle(color: white, fontWeight: FontWeight.bold),),)
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(9, 3, 9, 3),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              color: widget.bet.teamId == "1"
+                                  ? Color(0xff4DB23C)
+                                  : Color(0xffB52323)),
+                          child: Text(
+                            widget.bet.teamId == "2" ? "Victoire" : "Défaite",
+                            style: TextStyle(
+                                color: white, fontWeight: FontWeight.bold),
+                          ),
+                        )
                       ],
                     )),
               ),
@@ -104,15 +139,23 @@ class _MesParisCardState extends State<MesParisCard> {
                           SizedBox(
                             height: 52,
                             width: 52,
-                            child: SvgPicture.asset(
-                                'assets/images/spirit-logo.svg'),
+                            child: widget.bet.match.team2.team.imageUrl
+                                    .contains(".svg")
+                                ? ScalableImageWidget.fromSISource(
+                                    si: ScalableImageSource.fromSvgHttpUrl(
+                                        Uri.parse(widget
+                                            .bet.match.team2.team.imageUrl)))
+                                : Image.network(
+                                    widget.bet.match.team2.team.imageUrl),
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            "2.32",
-                            style: TextStyle(
+                          Text(
+                            widget.bet.teamId == "1"
+                                ? widget.bet.odds.toString()
+                                : widget.bet.ennemyOdds.toString(),
+                            style: const TextStyle(
                                 color: third, fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -120,11 +163,11 @@ class _MesParisCardState extends State<MesParisCard> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Expanded(
                             child: Text(
-                              "Team Spirit",
+                              widget.bet.match.team2.team.name,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -132,19 +175,52 @@ class _MesParisCardState extends State<MesParisCard> {
                                   color: black),
                             ),
                           ),
-                          
                         ],
                       ),
-                      SizedBox(height: 20,),
-                        Container(padding: EdgeInsets.fromLTRB(9, 3, 9, 3), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color:Color(0xff4DB23C)), child: Text("Victoire", style: TextStyle(color: white, fontWeight: FontWeight.bold),),)
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(9, 3, 9, 3),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: widget.bet.teamId == "2"
+                                ? Color(0xff4DB23C)
+                                : Color(0xffB52323)),
+                        child: Text(
+                          widget.bet.teamId == "2" ? "Victoire" : "Défaite",
+                          style: TextStyle(
+                              color: white, fontWeight: FontWeight.bold),
+                        ),
+                      )
                     ],
                   ),
                 ),
               )
             ],
           ),
-          SizedBox(height: 20,),
-          Container(width: 160, height: 40, decoration: BoxDecoration(color: secondary, borderRadius: BorderRadius.all(Radius.circular(10)),), child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Text("30", style: TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 18),),SizedBox(width: 6,), Icon(MingCute.diamond_2_line, size: 24, color: black)]),)
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: 160,
+            height: 40,
+            decoration: BoxDecoration(
+              color: secondary,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                widget.bet.point.toString(),
+                style: TextStyle(
+                    color: black, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(
+                width: 6,
+              ),
+              Icon(MingCute.diamond_2_line, size: 24, color: black)
+            ]),
+          )
         ]),
       ),
     );
