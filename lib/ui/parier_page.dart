@@ -13,8 +13,9 @@ import 'package:jovial_svg/jovial_svg.dart';
 
 class ParierPage extends StatefulWidget {
   final Match match;
+  final int points;
 
-  const ParierPage(this.match, {Key? key}) : super(key: key);
+  const ParierPage(this.match, this.points, {Key? key}) : super(key: key);
 
   @override
   State<ParierPage> createState() => _ParierPageState();
@@ -326,6 +327,9 @@ class _ParierPageState extends State<ParierPage> {
                       height: 54,
                       child: TextField(
                         onChanged: (value) {
+                          if (int.parse(pointValue.text) > widget.points) {
+                            pointValue.text = widget.points.toString();
+                          }
                           setState(() {});
                         },
                         controller: pointValue,
@@ -357,7 +361,7 @@ class _ParierPageState extends State<ParierPage> {
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text(
-                        '358',
+                        widget.points.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -373,22 +377,32 @@ class _ParierPageState extends State<ParierPage> {
                           if (pointValue.text.isNotEmpty &&
                               indexCurrentTeam != 0) {
                             if (indexCurrentTeam == 1) {
-                              API.addBet(
-                                  widget.match.id,
-                                  int.parse(pointValue.text),
-                                  "1",
-                                  widget.match.team1.odds,
-                                  widget.match.team2.odds);
-                              Navigator.pop(context, true);
+                              API
+                                  .addBet(
+                                      widget.match.id,
+                                      int.parse(pointValue.text),
+                                      "1",
+                                      widget.match.team1.odds,
+                                      widget.match.team2.odds)
+                                  .then(
+                                (value) {
+                                  Navigator.pop(context, true);
+                                },
+                              );
                             }
                             if (indexCurrentTeam == 2) {
-                              API.addBet(
-                                  widget.match.id,
-                                  int.parse(pointValue.text),
-                                  "2",
-                                  widget.match.team2.odds,
-                                  widget.match.team1.odds);
-                              Navigator.pop(context, true);
+                              API
+                                  .addBet(
+                                      widget.match.id,
+                                      int.parse(pointValue.text),
+                                      "2",
+                                      widget.match.team2.odds,
+                                      widget.match.team1.odds)
+                                  .then(
+                                (value) {
+                                  Navigator.pop(context, true);
+                                },
+                              );
                             }
                           }
                         },

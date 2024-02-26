@@ -46,8 +46,12 @@ class API {
     return Team.fromDocumentSnapshot(snapshot);
   }
 
-  static void addBet(String matchId, int point, String teamId, double odds,
-      double ennemyOdds) {
+  static Future<bool> addBet(String matchId, int point, String teamId, double odds,
+      double ennemyOdds) async {
+    int userPoints = await API.getPointsFromUserId(currentUserId);
+    if (userPoints < point) {
+      return false;
+    }
     final bet = <String, dynamic>{
       "matchId": matchId,
       "point": point,
@@ -57,8 +61,10 @@ class API {
       "ennemyOdds": ennemyOdds,
     };
 
-    _db.collection("bet").add(bet).then((documentSnapshot) =>
-        {print("Added Data with ID: ${documentSnapshot.id}")});
+    return _db.collection("bet").add(bet).then((documentSnapshot) {
+      _db.collection("user").doc(currentUserId).update({"point": FieldValue.increment(-1 * point)});
+      return true;
+    });
   }
 
   static Future<List<Bet>> getBetsFromUserId(String userId) async {
@@ -69,4 +75,13 @@ class API {
       return Bet.fromDocumentSnapshot(docSnapshot, match);
     }).toList());
   }
+
+  
+
+  static Future<int> getPointsFromUserId(String userId) async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _db.collection("user").doc(userId).get();
+    return snapshot.data()?["point"];
+  }
+
 }
