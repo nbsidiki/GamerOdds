@@ -1,12 +1,74 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
-class SigninPage extends StatelessWidget {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:gamer_oods_flutter_application/ui/login_page.dart';
+
+class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
 
   @override
+  State<SigninPage> createState() => _SigninPageState();
+}
+
+class _SigninPageState extends State<SigninPage> {
+  //Define all controlers
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
+  final _globalKey = GlobalKey<ScaffoldMessengerState>();
+
+  String? errorEmail;
+  String? errorConfirmPassword;
+  String? errorPassword;
+
+  void register() async {
+    if (!isValidEmail(emailController.text)) {
+      errorEmail = "'${emailController.text}' is not email !";
+    } else {
+      errorEmail = null;
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      print("password and confirmPassword must be the same");
+    }
+    if (errorEmail == null &&
+        errorPassword == null &&
+        errorConfirmPassword == null) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
+        var snackBar =
+            SnackBar(content: Text('Successfully create the account ! 👌'));
+
+        _globalKey.currentState?.showSnackBar(snackBar);
+        await Future.delayed(const Duration(seconds: 2));
+
+        Navigator.of(context).pop();
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'email-already-in-use') {
+          errorEmail = "${emailController.text} is already use !";
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    setState(() {});
+  }
+
+  bool isValidEmail(String email) {
+    return RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(email);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return ScaffoldMessenger(
+      key: _globalKey,
+      child: Scaffold(
         body: SafeArea(
           child: Stack(
             children: [
@@ -19,22 +81,46 @@ class SigninPage extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
+                  child: new BackdropFilter(
+                    filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                          color: Colors.white.withOpacity(0.0)),
+                    ),
+                  ),
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 200),
-                padding: EdgeInsets.only(left: 155),
+                margin: const EdgeInsets.only(top: 250),
+                padding: EdgeInsets.only(left: 20),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.ideographic,
                   children: [
-                    Text("Feels the",
-                        style: TextStyle(fontSize: 25, color: Colors.white)),
+                    Text(
+                      "Feels the ",
+                      style: TextStyle(
+                          fontSize: 40,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w100),
+                    ),
                     Text("Game",
-                        style: TextStyle(fontSize: 35, color: Colors.white)),
+                        style: TextStyle(
+                            fontSize: 70,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                    Text(
+                      ".",
+                      style: TextStyle(
+                          fontSize: 40,
+                          color: Color.fromARGB(255, 212, 211, 211),
+                          fontWeight: FontWeight.w100),
+                    ),
                   ],
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 0.0, top: 330.0),
+                margin: const EdgeInsets.only(bottom: 0.0, top: 500.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
@@ -47,20 +133,24 @@ class SigninPage extends StatelessWidget {
                     padding: const EdgeInsets.all(20.0),
                     child: Container(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Inscription',
-                              style:
-                                  TextStyle(fontSize: 24, color: Colors.black)),
-                          TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: 'Username',
-                                prefixIcon: Icon(Icons.email),
-                                border: OutlineInputBorder(),
-                              )),
+                          Text('Inscription',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                          TextField(
+                            controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                                labelText: 'Email',
+                                prefixIcon: const Icon(Icons.email),
+                                border: const OutlineInputBorder(),
+                                errorText: errorEmail),
+                          ),
                           const SizedBox(height: 20),
-                          TextFormField(
+                          TextField(
+                            controller: passwordController,
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                               labelText: 'Mot de passe',
@@ -70,10 +160,11 @@ class SigninPage extends StatelessWidget {
                             obscureText: true,
                           ),
                           const SizedBox(height: 20),
-                          TextFormField(
+                          TextField(
+                            controller: confirmPasswordController,
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
-                              labelText: 'Confirmation de Mot de passe',
+                              labelText: 'Confirmation du mot de passe',
                               prefixIcon: Icon(Icons.lock),
                               border: OutlineInputBorder(),
                             ),
@@ -84,15 +175,29 @@ class SigninPage extends StatelessWidget {
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Color(
+                                backgroundColor: Color(
                                     0xff5E28D1), // Couleur violette pour le bouton
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                register();
+                              },
                               child: const Text('inscription',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white)),
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.all(2),
+                            child: GestureDetector(
+                              child: Text(
+                                "Retour",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          )
                         ],
                       ),
                     ),

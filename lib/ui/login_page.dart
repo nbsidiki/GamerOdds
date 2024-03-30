@@ -54,7 +54,7 @@ class _LoginPage extends State<LoginPage> {
                   padding: const EdgeInsets.only(top: 9, right: 5),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary:
+                      backgroundColor:
                           Color(0xff5E28D1), // Couleur violette pour le bouton
                     ),
                     onPressed: () {
@@ -124,7 +124,7 @@ class _LoginPage extends State<LoginPage> {
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Color(
+                                backgroundColor: Color(
                                     0xff5E28D1), // Couleur violette pour le bouton
                               ),
                               onPressed: () {
