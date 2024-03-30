@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:gamer_oods_flutter_application/ui/login_page.dart';
 
-class SigninPage extends StatelessWidget {
+class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
+
+  @override
+  State<SigninPage> createState() => _SigninPage();
+}
+
+class _SigninPage extends State<SigninPage> {
+  FirebaseDatabase database = FirebaseDatabase.instance;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  Future<void> signUp() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text);
+      if (userCredential.user != null) {
+        print('Utilisateur créé avec succès !');
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginPage()));
+      }
+    } catch (e) {
+      print('Erreur lors de la création de l\'utilisateur : $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +80,7 @@ class SigninPage extends StatelessWidget {
                               style:
                                   TextStyle(fontSize: 24, color: Colors.black)),
                           TextFormField(
+                              controller: emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: const InputDecoration(
                                 labelText: 'Username',
@@ -61,6 +89,7 @@ class SigninPage extends StatelessWidget {
                               )),
                           const SizedBox(height: 20),
                           TextFormField(
+                            controller: passwordController,
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                               labelText: 'Mot de passe',
@@ -87,7 +116,9 @@ class SigninPage extends StatelessWidget {
                                 primary: Color(
                                     0xff5E28D1), // Couleur violette pour le bouton
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                signUp();
+                              },
                               child: const Text('inscription',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white)),
