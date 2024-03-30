@@ -38,8 +38,9 @@ class _SigninPageState extends State<SigninPage> {
         errorPassword == null &&
         errorConfirmPassword == null) {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
+        UserCredential user = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: emailController.text, password: passwordController.text);
         var snackBar =
             SnackBar(content: Text('Successfully create the account ! 👌'));
 
