@@ -16,16 +16,19 @@ class API {
         .orderBy("date")
         .get();
     return Future.wait(snapshot.docs.map((docSnapshot) async {
-      List<Play> listPlays = await API.getPlaysByMatchId(docSnapshot.id);
-      return Match.fromDocumentSnapshot(docSnapshot, listPlays);
+      Team team1 = await API.getTeamById(docSnapshot.data()["team1Id"].toString());
+      Team team2 = await API.getTeamById(docSnapshot.data()["team2Id"].toString());
+      return Match.fromDocumentSnapshot(docSnapshot, team1, team2);
     }).toList());
   }
 
   static Future<Match> getMatchById(String matchId) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await _db.collection("match").doc(matchId).get();
-    List<Play> listPlays = await API.getPlaysByMatchId(snapshot.id);
-    return Match.fromDocumentSnapshot(snapshot, listPlays);
+    // List<Play> listPlays = await API.getPlaysByMatchId(snapshot.id);
+    Team team1 = await API.getTeamById(snapshot.data()!["team1Id"].toString());
+    Team team2 = await API.getTeamById(snapshot.data()!["team2Id"].toString());
+    return Match.fromDocumentSnapshot(snapshot, team1, team2);
   }
 
   static Future<List<Play>> getPlaysByMatchId(String matchId) async {
@@ -49,7 +52,8 @@ class API {
   static Future<bool> addBet(String matchId, int point, String teamId, double odds,
       double ennemyOdds) async {
     int userPoints = await API.getPointsFromUserId(currentUserId);
-    if (userPoints < point) {
+    bool matchEnded = (await API.getMatchById(matchId)).ended;
+    if (userPoints < point && matchEnded == false) {
       return false;
     }
     final bet = <String, dynamic>{
@@ -59,6 +63,8 @@ class API {
       "userId": currentUserId,
       "odds": odds,
       "ennemyOdds": ennemyOdds,
+      "win": null,
+      "ended": false
     };
 
     return _db.collection("bet").add(bet).then((documentSnapshot) {
@@ -71,7 +77,7 @@ class API {
     QuerySnapshot<Map<String, dynamic>> snapshot =
         await _db.collection("bet").where("userId", isEqualTo: userId).get();
     return Future.wait(snapshot.docs.map((docSnapshot) async {
-      Match match = await API.getMatchById(docSnapshot.data()["matchId"]);
+      Match match = await API.getMatchById(docSnapshot.data()["matchId"].toString());
       return Bet.fromDocumentSnapshot(docSnapshot, match);
     }).toList());
   }

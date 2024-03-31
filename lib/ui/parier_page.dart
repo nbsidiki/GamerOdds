@@ -171,14 +171,14 @@ class _ParierPageState extends State<ParierPage> {
                                 child: SizedBox(
                                   height: 52,
                                   width: 52,
-                                  child: widget.match.team1.team.imageUrl
+                                  child: widget.match.team1.imageUrl
                                           .contains(".svg")
                                       ? ScalableImageWidget.fromSISource(
                                           si: ScalableImageSource
                                               .fromSvgHttpUrl(Uri.parse(widget
-                                                  .match.team1.team.imageUrl)))
+                                                  .match.team1.imageUrl)))
                                       : Image.network(
-                                          widget.match.team1.team.imageUrl),
+                                          widget.match.team1.imageUrl),
                                 ),
                               ),
                             ),
@@ -222,14 +222,14 @@ class _ParierPageState extends State<ParierPage> {
                                 child: SizedBox(
                                   height: 52,
                                   width: 52,
-                                  child: widget.match.team2.team.imageUrl
+                                  child: widget.match.team2.imageUrl
                                           .contains(".svg")
                                       ? ScalableImageWidget.fromSISource(
                                           si: ScalableImageSource
                                               .fromSvgHttpUrl(Uri.parse(widget
-                                                  .match.team2.team.imageUrl)))
+                                                  .match.team2.imageUrl)))
                                       : Image.network(
-                                          widget.match.team2.team.imageUrl),
+                                          widget.match.team2.imageUrl),
                                 ),
                               ),
                             ),
@@ -249,7 +249,7 @@ class _ParierPageState extends State<ParierPage> {
                               children: [
                                 AnimatedDefaultTextStyle(
                                   child:
-                                      Text(widget.match.team1.odds.toString()),
+                                      Text(widget.match.team1Odds.toString()),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24,
@@ -265,7 +265,7 @@ class _ParierPageState extends State<ParierPage> {
                                   height: 16,
                                 ),
                                 Text(
-                                  widget.match.team1.team.name.toString(),
+                                  widget.match.team1.name.toString(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 24,
@@ -280,7 +280,7 @@ class _ParierPageState extends State<ParierPage> {
                               children: [
                                 AnimatedDefaultTextStyle(
                                   child:
-                                      Text(widget.match.team2.odds.toString()),
+                                      Text(widget.match.team2Odds.toString()),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24,
@@ -296,7 +296,7 @@ class _ParierPageState extends State<ParierPage> {
                                   height: 16,
                                 ),
                                 Text(
-                                  widget.match.team2.team.name.toString(),
+                                  widget.match.team2.name.toString(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 24,
@@ -381,9 +381,9 @@ class _ParierPageState extends State<ParierPage> {
                                   .addBet(
                                       widget.match.id,
                                       int.parse(pointValue.text),
-                                      "1",
-                                      widget.match.team1.odds,
-                                      widget.match.team2.odds)
+                                      widget.match.team1.id,
+                                      widget.match.team1Odds,
+                                      widget.match.team2Odds)
                                   .then(
                                 (value) {
                                   Navigator.pop(context, true);
@@ -395,9 +395,9 @@ class _ParierPageState extends State<ParierPage> {
                                   .addBet(
                                       widget.match.id,
                                       int.parse(pointValue.text),
-                                      "2",
-                                      widget.match.team2.odds,
-                                      widget.match.team1.odds)
+                                      widget.match.team2.id,
+                                      widget.match.team2Odds,
+                                      widget.match.team1Odds)
                                   .then(
                                 (value) {
                                   Navigator.pop(context, true);

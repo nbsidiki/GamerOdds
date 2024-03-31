@@ -1,6 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:gamer_oods_flutter_application/theme/colors.dart';
 import 'package:gamer_oods_flutter_application/ui/home_page.dart';
 import 'package:gamer_oods_flutter_application/ui/signin_page.dart';
 
@@ -31,101 +34,188 @@ class _LoginPage extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: primary,));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SafeArea(
-          child: Stack(
+    return Scaffold(
+      body: Animate(
+        effects: [FadeEffect(duration: 400.ms, curve: Curves.decelerate)],
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            color: primary,
+            image: DecorationImage(
+                image: AssetImage('assets/images/login_background.png'),
+                fit: BoxFit.fill,
+                alignment: FractionalOffset.topRight),
+          ),
+          child: Column(
             children: [
               Expanded(
-                flex: 2,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/login_background.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 9, right: 5),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary:
-                          Color(0xff5E28D1), // Couleur violette pour le bouton
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SigninPage()),
-                      );
-                    },
-                    child: const Text('Inscription',
-                        style: TextStyle(fontSize: 25, color: Colors.white)),
-                  ),
-                ),
-              ]),
-              Container(
-                margin: const EdgeInsets.only(top: 200),
-                padding: EdgeInsets.only(left: 155),
-                child: Row(
-                  children: [
-                    Text("Feels the",
-                        style: TextStyle(fontSize: 25, color: Colors.white)),
-                    Text("Game",
-                        style: TextStyle(fontSize: 35, color: Colors.white)),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 0.0, top: 380.0),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0)),
-                  color: Colors.white,
-                ),
-                child: Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  padding: const EdgeInsets.fromLTRB(16, 48, 16, 0),
+                  width: MediaQuery.of(context).size.width,
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Animate(
+                      effects: [FadeEffect(delay: 250.ms, duration: 600.ms, curve: Curves.decelerate), SlideEffect(delay: 250.ms, duration: 400.ms, curve: Curves.decelerate),  ],
+                      child: Row(
                         children: [
-                          const Text('Bienvenue sur \n GamerOdds',
-                              style:
-                                  TextStyle(fontSize: 28, color: Colors.black)),
-                          TextField(
+                          Padding(
+                            padding: EdgeInsets.only(top: 18),
+                            child: Text("Feels the ",
+                                style: TextStyle(
+                                  fontSize: 36,
+                                  color: white,
+                                )),
+                          ),
+                          Text("Game",
+                              style: TextStyle(
+                                  fontSize: 64,
+                                  fontWeight: FontWeight.bold,
+                                  color: white)),
+                          Padding(
+                            padding: EdgeInsets.only(top: 18),
+                            child: Text(".",
+                                style: TextStyle(fontSize: 36, color: white)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Animate(
+                effects: [FadeEffect(delay: 550.ms, duration: 500.ms, curve: Curves.easeIn), SlideEffect(delay: 550.ms, duration: 600.ms, curve: Curves.fastOutSlowIn, begin: Offset(0, 1))  ],
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.16),
+                        blurRadius: 8,
+                        // Shadow position
+                      ),
+                    ],
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(50.0),
+                        topRight: Radius.circular(50.0)),
+                    color: Colors.white,
+                  ),
+                  child: Animate(
+                    effects: [FadeEffect(delay: 1000.ms, duration: 400.ms, curve: Curves.easeIn), SlideEffect(delay: 1000.ms, duration: 600.ms, curve: Curves.fastOutSlowIn, begin: Offset(0, 0.2)) ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        children: [
+                          const Text('GamerOdds',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 32,
+                                  color: black,
+                                  fontWeight: FontWeight.bold)),
+                          Text(
+                            "Connectez-vous à votre compte",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Container(
+                            height: 54,
+                            padding: EdgeInsets.only(left: 4, right: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Color(0xffEBEEEF),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.16),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 4), // Shadow position
+                                ),
+                              ],
+                            ),
+                            child: TextField(
                               controller: emailController,
                               keyboardType: TextInputType.text,
-                              decoration: const InputDecoration(
-                                labelText: 'Username',
-                                prefixIcon: Icon(Icons.email),
-                                border: OutlineInputBorder(),
-                              )),
-                          const SizedBox(height: 20),
-                          TextField(
-                            controller: passwordController,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              labelText: 'Mot de passe',
-                              prefixIcon: Icon(Icons.lock),
-                              border: OutlineInputBorder(),
+                              style: TextStyle(
+                                  color: black, fontWeight: FontWeight.bold),
+                              cursorColor: third,
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderSide: BorderSide.none),
+                                  hintText: 'Votre nom de compte',
+                                  hintStyle: TextStyle(
+                                      fontFamily: 'BricolageGrotesque',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal,
+                                      color: black.withOpacity(0.4))),
                             ),
-                            obscureText: true,
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
                           Container(
+                            height: 54,
+                            padding: EdgeInsets.only(left: 4, right: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Color(0xffEBEEEF),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.16),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 4), // Shadow position
+                                ),
+                              ],
+                            ),
+                            child: TextField(
+                              controller: passwordController,
+                              keyboardType: TextInputType.visiblePassword,
+                              style: TextStyle(
+                                  color: black, fontWeight: FontWeight.bold),
+                              cursorColor: third,
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderSide: BorderSide.none),
+                                  hintText: 'Votre mot de passe',
+                                  hintStyle: TextStyle(
+                                      fontFamily: 'BricolageGrotesque',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal,
+                                      color: black.withOpacity(0.4))),
+                              obscureText: true,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          Container(
+                            height: 54,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.16),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 4), // Shadow position
+                                ),
+                              ],
+                            ),
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Color(
-                                    0xff5E28D1), // Couleur violette pour le bouton
+                                backgroundColor: primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(20), // <-- Radius
+                                ),
                               ),
                               onPressed: () {
                                 signIn();
@@ -134,16 +224,31 @@ class _LoginPage extends State<LoginPage> {
                                 }
                               },
                               child: const Text('Se connecter',
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white)),
+                                  style:
+                                      TextStyle(fontSize: 18, color: Colors.white)),
                             ),
                           ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Pas de compte ? ",
+                                  style: TextStyle(fontSize: 16)),
+                              Text(
+                                "Inscrivez-vous",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

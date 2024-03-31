@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore: ^4.15.5
   intl: ^0.19.0
   jovial_svg: ^1.1.20
+  flutter_animate: ^4.5.0
 
 dev_dependencies:
   flutter_test:

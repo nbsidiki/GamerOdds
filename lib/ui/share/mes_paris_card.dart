@@ -57,7 +57,7 @@ class _MesParisCardState extends State<MesParisCard> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              widget.bet.teamId == "1"
+                              widget.bet.teamId == widget.bet.match.team1.id
                                   ? widget.bet.odds.toString()
                                   : widget.bet.ennemyOdds.toString(),
                               style: const TextStyle(
@@ -69,14 +69,14 @@ class _MesParisCardState extends State<MesParisCard> {
                             SizedBox(
                               height: 52,
                               width: 52,
-                              child: widget.bet.match.team1.team.imageUrl
+                              child: widget.bet.match.team1.imageUrl
                                       .contains(".svg")
                                   ? ScalableImageWidget.fromSISource(
                                       si: ScalableImageSource.fromSvgHttpUrl(
                                           Uri.parse(widget
-                                              .bet.match.team1.team.imageUrl)))
+                                              .bet.match.team1.imageUrl)))
                                   : Image.network(
-                                      widget.bet.match.team1.team.imageUrl),
+                                      widget.bet.match.team1.imageUrl),
                             ),
                           ],
                         ),
@@ -87,7 +87,7 @@ class _MesParisCardState extends State<MesParisCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                widget.bet.match.team1.team.name,
+                                widget.bet.match.team1.name,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -105,11 +105,11 @@ class _MesParisCardState extends State<MesParisCard> {
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
-                              color: widget.bet.teamId == "1"
+                              color: widget.bet.teamId == widget.bet.match.team1.id
                                   ? Color(0xff4DB23C)
                                   : Color(0xffB52323)),
                           child: Text(
-                            widget.bet.teamId == "2" ? "Victoire" : "Défaite",
+                            widget.bet.teamId == widget.bet.match.team1.id ? "Victoire" : "Défaite",
                             style: TextStyle(
                                 color: white, fontWeight: FontWeight.bold),
                           ),
@@ -139,20 +139,20 @@ class _MesParisCardState extends State<MesParisCard> {
                           SizedBox(
                             height: 52,
                             width: 52,
-                            child: widget.bet.match.team2.team.imageUrl
+                            child: widget.bet.match.team2.imageUrl
                                     .contains(".svg")
                                 ? ScalableImageWidget.fromSISource(
                                     si: ScalableImageSource.fromSvgHttpUrl(
                                         Uri.parse(widget
-                                            .bet.match.team2.team.imageUrl)))
+                                            .bet.match.team2.imageUrl)))
                                 : Image.network(
-                                    widget.bet.match.team2.team.imageUrl),
+                                    widget.bet.match.team2.imageUrl),
                           ),
                           const SizedBox(
                             width: 20,
                           ),
                           Text(
-                            widget.bet.teamId == "1"
+                            widget.bet.teamId == widget.bet.match.team1.id
                                 ? widget.bet.odds.toString()
                                 : widget.bet.ennemyOdds.toString(),
                             style: const TextStyle(
@@ -167,7 +167,7 @@ class _MesParisCardState extends State<MesParisCard> {
                         children: [
                           Expanded(
                             child: Text(
-                              widget.bet.match.team2.team.name,
+                              widget.bet.match.team2.name,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -184,11 +184,11 @@ class _MesParisCardState extends State<MesParisCard> {
                         padding: EdgeInsets.fromLTRB(9, 3, 9, 3),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: widget.bet.teamId == "2"
+                            color: widget.bet.teamId == widget.bet.match.team2.id
                                 ? Color(0xff4DB23C)
                                 : Color(0xffB52323)),
                         child: Text(
-                          widget.bet.teamId == "2" ? "Victoire" : "Défaite",
+                          widget.bet.teamId == widget.bet.match.team2.id ? "Victoire" : "Défaite",
                           style: TextStyle(
                               color: white, fontWeight: FontWeight.bold),
                         ),
@@ -206,7 +206,7 @@ class _MesParisCardState extends State<MesParisCard> {
             width: 160,
             height: 40,
             decoration: BoxDecoration(
-              color: secondary,
+              color: widget.bet.win == null ? secondary : widget.bet.win == true  ? Color(0xff4DB23C) : Color(0xffB52323),
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
