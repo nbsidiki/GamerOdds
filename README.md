@@ -15,11 +15,11 @@ Elle doit permettre de :
 - Faire un pari 
 - Voir son historique de ses paris
 
-Nous avons choisi de faire le projet avec FireAuth pour la connexion ainsi que FireStore pour le stockage des données. Ce choix nous a permit de découvrir et de manipuler pour la première fois une base NoSQL dans un contexte projet.
+Nous avons choisi de faire le projet avec FireAuth pour la connexion ainsi que FireStore pour le stockage des données. Ce choix nous a permis de découvrir et de manipuler pour la première fois une base NoSQL dans un contexte projet.
 
 Pour la récupération des matchs, nous avons utiliser le projet suivant : 
 https://www.npmjs.com/package/hltv
-Il nous a permit d'élaborer un script qui va récupérer les matchs et qui les envoies dans notre base de données FireStore. 
+Il nous a permis d'élaborer un script qui va récupérer les matchs et qui les envoie dans notre base de données FireStore. 
 
 ## Rendus
 
