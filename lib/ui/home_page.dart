@@ -39,7 +39,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: primary,));
+      systemNavigationBarColor: primary,
+    ));
     points = StreamController<int>();
     FirebaseFirestore.instance
         .collection('user')
@@ -135,7 +136,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       backgroundColor: primary,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(48.0), // here the desired height
@@ -208,7 +208,17 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 16,
                 color: pageIndex == 2 ? black : black.withOpacity(0.5)),
           ),
-        )
+        ),
+        GestureDetector(
+            onTap: () {
+              setState(() {
+                Navigator.pop(context);
+              });
+            },
+            child: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ))
       ]),
     );
   }
@@ -239,14 +249,30 @@ class _HomePageState extends State<HomePage> {
                                 children: List.generate(
                                     snapshot.data?.length ?? 0, (index) {
                                   return Animate(
-                                    effects: [FadeEffect(delay: countMatchs != 1 ? 200.ms : index > 8 ? (200 * 8).ms : (200 * index).ms,  duration: 500.ms), SlideEffect(delay: countMatchs != 1 ? 200.ms : index > 8 ? (200 * 8).ms : (200 * index).ms,  duration: 500.ms, begin: Offset(0, 0.2))],
+                                    effects: [
+                                      FadeEffect(
+                                          delay: countMatchs != 1
+                                              ? 200.ms
+                                              : index > 8
+                                                  ? (200 * 8).ms
+                                                  : (200 * index).ms,
+                                          duration: 500.ms),
+                                      SlideEffect(
+                                          delay: countMatchs != 1
+                                              ? 200.ms
+                                              : index > 8
+                                                  ? (200 * 8).ms
+                                                  : (200 * index).ms,
+                                          duration: 500.ms,
+                                          begin: Offset(0, 0.2))
+                                    ],
                                     child: GestureDetector(
                                         onTap: () async {
                                           Navigator.push(
                                             context,
                                             PageTransition(
-                                              type:
-                                                  PageTransitionType.rightToLeft,
+                                              type: PageTransitionType
+                                                  .rightToLeft,
                                               child: ParierPage(
                                                   (snapshot.data
                                                       as List<Match>)[index],
@@ -270,7 +296,7 @@ class _HomePageState extends State<HomePage> {
                                                   //   // });
                                                   //   //   //points = API.getPointsFromUserId(currentUserId);
                                                   //   // });
-                                    
+
                                                   //   timer?.cancel();
                                                   //   timer = Timer.periodic(
                                                   //       Duration(seconds: 40),
@@ -316,7 +342,23 @@ class _HomePageState extends State<HomePage> {
                           children: List.generate(snapshot.data?.length ?? 0,
                               (index) {
                             return Animate(
-                              effects: [FadeEffect(delay: countBets != 1 ? 200.ms : index > 8 ? (200 * 8).ms : (200 * index).ms,  duration: 500.ms), SlideEffect(delay: countBets != 1 ? 200.ms : index > 8 ? (200 * 8).ms : (200 * index).ms,  duration: 500.ms, begin: Offset(0, 0.2))],
+                              effects: [
+                                FadeEffect(
+                                    delay: countBets != 1
+                                        ? 200.ms
+                                        : index > 8
+                                            ? (200 * 8).ms
+                                            : (200 * index).ms,
+                                    duration: 500.ms),
+                                SlideEffect(
+                                    delay: countBets != 1
+                                        ? 200.ms
+                                        : index > 8
+                                            ? (200 * 8).ms
+                                            : (200 * index).ms,
+                                    duration: 500.ms,
+                                    begin: Offset(0, 0.2))
+                              ],
                               child: MesParisCard(
                                   (snapshot.data as List<Bet>)[index]),
                             );
@@ -350,7 +392,23 @@ class _HomePageState extends State<HomePage> {
                           children: List.generate(snapshot.data?.length ?? 0,
                               (index) {
                             return Animate(
-                              effects: [FadeEffect(delay: countHisto != 1 ? 200.ms : index > 8 ? (200 * 8).ms : (200 * index).ms,  duration: 500.ms), SlideEffect(delay: countHisto != 1 ? 200.ms : index > 8 ? (200 * 8).ms : (200 * index).ms,  duration: 500.ms, begin: Offset(0, 0.2))],
+                              effects: [
+                                FadeEffect(
+                                    delay: countHisto != 1
+                                        ? 200.ms
+                                        : index > 8
+                                            ? (200 * 8).ms
+                                            : (200 * index).ms,
+                                    duration: 500.ms),
+                                SlideEffect(
+                                    delay: countHisto != 1
+                                        ? 200.ms
+                                        : index > 8
+                                            ? (200 * 8).ms
+                                            : (200 * index).ms,
+                                    duration: 500.ms,
+                                    begin: Offset(0, 0.2))
+                              ],
                               child: MesParisCard(
                                   (snapshot.data as List<Bet>)[index]),
                             );

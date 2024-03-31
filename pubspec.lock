@@ -502,10 +502,5 @@ packages:
     source: hosted
     version: "6.5.0"
 sdks:
-<<<<<<< HEAD
-  dart: ">=3.2.3 <4.0.0"
-  flutter: ">=3.7.0-0.0"
-=======
   dart: ">=3.3.0 <4.0.0"
-  flutter: ">=3.7.0-0"
->>>>>>> 4796800ed6d61727e6c929d9d325e15ed367e69f
+  flutter: ">=3.7.0-0.0"

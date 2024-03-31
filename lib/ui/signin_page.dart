@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gamer_oods_flutter_application/models/api.dart';
+import 'package:gamer_oods_flutter_application/theme/colors.dart';
 import 'package:gamer_oods_flutter_application/ui/login_page.dart';
 
 class SigninPage extends StatefulWidget {
@@ -41,12 +43,11 @@ class _SigninPageState extends State<SigninPage> {
         UserCredential user = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
                 email: emailController.text, password: passwordController.text);
+        print("User created");
+        API.addNewUser(user.user!.uid);
         var snackBar =
             SnackBar(content: Text('Successfully create the account ! 👌'));
-
-        _globalKey.currentState?.showSnackBar(snackBar);
-        await Future.delayed(const Duration(seconds: 2));
-
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'email-already-in-use') {
@@ -67,146 +68,236 @@ class _SigninPageState extends State<SigninPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldMessenger(
-      key: _globalKey,
-      child: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/login_background.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: new BackdropFilter(
-                    filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: new Container(
-                      decoration: new BoxDecoration(
-                          color: Colors.white.withOpacity(0.0)),
-                    ),
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+          color: primary,
+          image: DecorationImage(
+              image: AssetImage('assets/images/login_background.png'),
+              fit: BoxFit.fill,
+              alignment: FractionalOffset.topRight),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16, 48, 16, 0),
+                width: MediaQuery.of(context).size.width,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 18),
+                        child: Text("Feels the ",
+                            style: TextStyle(
+                              fontSize: 36,
+                              color: white,
+                            )),
+                      ),
+                      Text("Game",
+                          style: TextStyle(
+                              fontSize: 64,
+                              fontWeight: FontWeight.bold,
+                              color: white)),
+                      Padding(
+                        padding: EdgeInsets.only(top: 18),
+                        child: Text(".",
+                            style: TextStyle(fontSize: 36, color: white)),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 250),
-                padding: EdgeInsets.only(left: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.ideographic,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.16),
+                    blurRadius: 8,
+                    // Shadow position
+                  ),
+                ],
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(50.0),
+                    topRight: Radius.circular(50.0)),
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
                   children: [
-                    Text(
-                      "Feels the ",
-                      style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w100),
-                    ),
-                    Text("Game",
+                    const Text('GamerOdds',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 70,
-                            color: Colors.white,
+                            fontSize: 32,
+                            color: black,
                             fontWeight: FontWeight.bold)),
                     Text(
-                      ".",
-                      style: TextStyle(
-                          fontSize: 40,
-                          color: Color.fromARGB(255, 212, 211, 211),
-                          fontWeight: FontWeight.w100),
+                      "Inscrivez-vous à GamerOdds 🎮",
+                      style: TextStyle(fontSize: 16),
                     ),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    Container(
+                      height: 54,
+                      padding: EdgeInsets.only(left: 4, right: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Color(0xffEBEEEF),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.16),
+                            blurRadius: 4,
+                            offset: Offset(0, 4), // Shadow position
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: emailController,
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(
+                            color: black, fontWeight: FontWeight.bold),
+                        cursorColor: third,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none),
+                            hintText: 'E-mail',
+                            hintStyle: TextStyle(
+                                fontFamily: 'BricolageGrotesque',
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: black.withOpacity(0.4))),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      height: 54,
+                      padding: EdgeInsets.only(left: 4, right: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Color(0xffEBEEEF),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.16),
+                            blurRadius: 4,
+                            offset: Offset(0, 4), // Shadow position
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        style: TextStyle(
+                            color: black, fontWeight: FontWeight.bold),
+                        cursorColor: third,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none),
+                            hintText: 'Mot de passe',
+                            hintStyle: TextStyle(
+                                fontFamily: 'BricolageGrotesque',
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: black.withOpacity(0.4))),
+                        obscureText: true,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      height: 54,
+                      padding: EdgeInsets.only(left: 4, right: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Color(0xffEBEEEF),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.16),
+                            blurRadius: 4,
+                            offset: Offset(0, 4), // Shadow position
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: confirmPasswordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        style: TextStyle(
+                            color: black, fontWeight: FontWeight.bold),
+                        cursorColor: third,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none),
+                            hintText: 'Confirmation de votre mot de passe',
+                            hintStyle: TextStyle(
+                                fontFamily: 'BricolageGrotesque',
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: black.withOpacity(0.4))),
+                        obscureText: true,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      height: 54,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.16),
+                            blurRadius: 4,
+                            offset: Offset(0, 4), // Shadow position
+                          ),
+                        ],
+                      ),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(20), // <-- Radius
+                          ),
+                        ),
+                        onPressed: () {
+                          register();
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            //print(FirebaseAuth.instance.currentUser?.uid);
+                          }
+                        },
+                        child: const Text('S\'inscrire',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "Retour",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    )
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 0.0, top: 500.0),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0)),
-                  color: Colors.white,
-                ),
-                child: Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Text('Inscription',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          TextField(
-                            controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                labelText: 'Email',
-                                prefixIcon: const Icon(Icons.email),
-                                border: const OutlineInputBorder(),
-                                errorText: errorEmail),
-                          ),
-                          const SizedBox(height: 20),
-                          TextField(
-                            controller: passwordController,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              labelText: 'Mot de passe',
-                              prefixIcon: Icon(Icons.lock),
-                              border: OutlineInputBorder(),
-                            ),
-                            obscureText: true,
-                          ),
-                          const SizedBox(height: 20),
-                          TextField(
-                            controller: confirmPasswordController,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              labelText: 'Confirmation du mot de passe',
-                              prefixIcon: Icon(Icons.lock),
-                              border: OutlineInputBorder(),
-                            ),
-                            obscureText: true,
-                          ),
-                          const SizedBox(height: 20),
-                          Container(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(
-                                    0xff5E28D1), // Couleur violette pour le bouton
-                              ),
-                              onPressed: () {
-                                register();
-                              },
-                              child: const Text('inscription',
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white)),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(2),
-                            child: GestureDetector(
-                              child: Text(
-                                "Retour",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

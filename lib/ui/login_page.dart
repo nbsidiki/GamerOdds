@@ -36,7 +36,8 @@ class _LoginPage extends State<LoginPage> {
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: primary,));
+      systemNavigationBarColor: primary,
+    ));
     super.initState();
   }
 
@@ -64,7 +65,16 @@ class _LoginPage extends State<LoginPage> {
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: Animate(
-                      effects: [FadeEffect(delay: 250.ms, duration: 600.ms, curve: Curves.decelerate), SlideEffect(delay: 250.ms, duration: 400.ms, curve: Curves.decelerate),  ],
+                      effects: [
+                        FadeEffect(
+                            delay: 250.ms,
+                            duration: 600.ms,
+                            curve: Curves.decelerate),
+                        SlideEffect(
+                            delay: 250.ms,
+                            duration: 400.ms,
+                            curve: Curves.decelerate),
+                      ],
                       child: Row(
                         children: [
                           Padding(
@@ -92,7 +102,15 @@ class _LoginPage extends State<LoginPage> {
                 ),
               ),
               Animate(
-                effects: [FadeEffect(delay: 550.ms, duration: 500.ms, curve: Curves.easeIn), SlideEffect(delay: 550.ms, duration: 600.ms, curve: Curves.fastOutSlowIn, begin: Offset(0, 1))  ],
+                effects: [
+                  FadeEffect(
+                      delay: 550.ms, duration: 500.ms, curve: Curves.easeIn),
+                  SlideEffect(
+                      delay: 550.ms,
+                      duration: 600.ms,
+                      curve: Curves.fastOutSlowIn,
+                      begin: Offset(0, 1))
+                ],
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
@@ -109,7 +127,17 @@ class _LoginPage extends State<LoginPage> {
                     color: Colors.white,
                   ),
                   child: Animate(
-                    effects: [FadeEffect(delay: 1000.ms, duration: 400.ms, curve: Curves.easeIn), SlideEffect(delay: 1000.ms, duration: 600.ms, curve: Curves.fastOutSlowIn, begin: Offset(0, 0.2)) ],
+                    effects: [
+                      FadeEffect(
+                          delay: 1000.ms,
+                          duration: 400.ms,
+                          curve: Curves.easeIn),
+                      SlideEffect(
+                          delay: 1000.ms,
+                          duration: 600.ms,
+                          curve: Curves.fastOutSlowIn,
+                          begin: Offset(0, 0.2))
+                    ],
                     child: Padding(
                       padding: const EdgeInsets.all(32),
                       child: Column(
@@ -152,7 +180,7 @@ class _LoginPage extends State<LoginPage> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20.0),
                                       borderSide: BorderSide.none),
-                                  hintText: 'Votre nom de compte',
+                                  hintText: 'Votre e-mail',
                                   hintStyle: TextStyle(
                                       fontFamily: 'BricolageGrotesque',
                                       fontSize: 18,
@@ -224,8 +252,8 @@ class _LoginPage extends State<LoginPage> {
                                 }
                               },
                               child: const Text('Se connecter',
-                                  style:
-                                      TextStyle(fontSize: 18, color: Colors.white)),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white)),
                             ),
                           ),
                           SizedBox(
@@ -236,10 +264,17 @@ class _LoginPage extends State<LoginPage> {
                             children: [
                               Text("Pas de compte ? ",
                                   style: TextStyle(fontSize: 16)),
-                              Text(
-                                "Inscrivez-vous",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => SigninPage()));
+                                },
+                                child: Text(
+                                  "Inscrivez-vous",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
                               )
                             ],
                           )
